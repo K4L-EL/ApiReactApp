@@ -1,31 +1,32 @@
 const express = require('express')
-const testObj = require("./arr.js")
-const userRouter = express.Router();
+const { v4: uuidv4 } = require(`uuid`);
+
+const router = express.Router();
+
+const usersList = []
+
+
+router.get("/", (req,res)=>
+{
+    res.send(usersList)
+})
+
+router.post("/", (req, res)=>{
+    const user = req.body
+
+    usersList.push( {...user, id:uuidv4()} )
+
+    res.send(`user: ${req.body.name } was added`)
+})
+
+router.get(`/:id`, (req, res)=> {
+    const { id } = req.params;
+    const foundUser = usersList.find((user) => user.id ===id);
+    res.send(foundUser)
+    console.log(usersList.id)
+})
 
 
 
-const arr2 =[{
-    name: "mike",
-    age: "16",
-    occupation: "student"
-},{
-    name: "alex",
-    age: "20",
-    occupation: "student"
-}];
-
-
-userRouter.get("/", (req,res) =>{
-    res.send(arr2)
-});
-
-
-userRouter.post("/", (req,res)=>{
-    const uuser = req.body;
-    arr2.push(uuser);    
-res.send})
-
-
-
-module.exports = {userRouter}
+module.exports = router;
 
